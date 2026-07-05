@@ -1,0 +1,23 @@
+# Build artefacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+
+# Editor noise
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Distribution
+dist/
+build/
+*.egg-info/
+*.egg
+
+# Local virtualenvs
+.venv/
+venv/
+env/

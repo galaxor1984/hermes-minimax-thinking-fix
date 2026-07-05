@@ -1,0 +1,30 @@
+name: minimax-thinking-fix
+version: "0.1.0"
+description: Override Hermes's bundled minimax provider so MiniMax-M3 thinking works on the Anthropic-compatible endpoint.
+kind: model-provider
+author: omarchy
+license: MIT
+homepage: https://github.com/gardenbaum/hermes-minimax-thinking-fix
+
+# What this plugin replaces / augments
+replaces:
+  - minimax
+  - minimax-cn
+
+# Hermes version compatibility (last tested)
+hermes:
+  min_version: "0.18.0"
+
+# Stable URLs that identify this plugin's scope
+scope:
+  providers:
+    - minimax
+    - minimax-cn
+  base_urls:
+    - https://api.minimax.io/anthropic
+    - https://api.minimaxi.com/anthropic
+  models:
+    - MiniMax-M3
+    - MiniMax-M3-highspeed   # future-proofing; not in docs as of 2026-07-05
+
+# Changelog lives in README — keep this manifest machine-readable only.
