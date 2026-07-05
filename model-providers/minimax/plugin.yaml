@@ -4,7 +4,7 @@ description: Override Hermes's bundled minimax provider so MiniMax-M3 thinking w
 kind: model-provider
 author: omarchy
 license: MIT
-homepage: https://github.com/gardenbaum/hermes-minimax-thinking-fix
+homepage: https://github.com/galaxor1984/hermes-minimax-thinking-fix
 
 # What this plugin replaces / augments
 replaces:

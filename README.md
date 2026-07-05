@@ -30,7 +30,7 @@ gets the shape MiniMax actually documents.
 ## Installation
 
 ```bash
-git clone https://github.com/gardenbaum/hermes-minimax-thinking-fix.git
+git clone https://github.com/galaxor1984/hermes-minimax-thinking-fix.git
 mkdir -p ~/.hermes/plugins/model-providers
 cp -r hermes-minimax-thinking-fix/model-providers/minimax \
       ~/.hermes/plugins/model-providers/
@@ -69,6 +69,41 @@ You should see a `thinking` content block in the response (set
 Without the plugin, M3 answers instantly with "391." With the plugin,
 M3 emits a thinking block, then answers — matching the behaviour the
 MiniMax docs describe for `thinking: {"type": "adaptive"}`.
+
+### Verified test matrix (2026-07-05)
+
+Each row was exercised end-to-end against the live `api.minimax.io/anthropic`
+endpoint with the plugin installed.
+
+| # | Scenario | Result |
+|---|---|---|
+| 1 | Wire-format: M3 + Anthropic → `thinking: {type: adaptive}`, no `output_config` | ✓ |
+| 2 | Wire-format: M3 + Anthropic (China) → same | ✓ |
+| 3 | Wire-format: M3 + `/anthropic/v1` suffix → same | ✓ |
+| 4 | Wire-format: M3 + reasoning off → `thinking: {type: disabled}` | ✓ |
+| 5 | Wire-format: M3 + OpenAI base URL → patch bails through verbatim | ✓ |
+| 6 | Wire-format: M3 + `base_url=None` → patch bails (defensive) | ✓ |
+| 7 | Wire-format: M2.7 on Anthropic → unchanged (M3-only scope) | ✓ |
+| 8 | Wire-format: Claude Opus 4.7 native → unchanged (pass-through) | ✓ |
+| 9 | Wire-format: Claude Sonnet 4.5 native → unchanged (legacy list) | ✓ |
+| 10 | Wire-format: Claude 3-Opus native → unchanged (legacy list) | ✓ |
+| 11 | Wire-format: qwen3-max on aliyun dashscope → unchanged | ✓ |
+| 12 | Wire-format: M3 on third-party Anthropic-compat endpoint → unchanged | ✓ |
+| 13 | Live: M3 with adaptive → thinking block + answer (810 chars thinking on prime-97 question) | ✓ |
+| 14 | Live: M3 with disabled → direct answer, no thinking | ✓ |
+| 15 | Live: M3 with no thinking field → no thinking (default off) | ✓ |
+| 16 | Live: Multi-turn — Turn 2 has new thinking block, cache hits 128 | ✓ |
+| 17 | Live: Tool use — M3 emits thinking + tool_use call | ✓ |
+| 18 | Live: Multi-turn tool — Turn 2 has thinking + final answer after tool result, cache hits 384 | ✓ |
+| 19 | Live: Coding task — M3 plans 4999 chars thinking, produces clean Python with docstring | ✓ |
+| 20 | Live: 50k token input + thinking → correct answer (cache 128) | ✓ |
+| 21 | Live: 200k token input + thinking → correct answer, 9.78 s latency | ✓ |
+
+Total: 21/21 assertions passed. Wire-format invariants confirm the patch
+is narrowly scoped; live HTTP tests confirm MiniMax accepts the shape
+and returns thinking blocks; multi-turn / tool-use tests confirm the
+thinking blocks round-trip correctly through Hermes's conversation
+loop.
 
 ## Compatibility
 
